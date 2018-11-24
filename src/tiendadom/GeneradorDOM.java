@@ -24,42 +24,66 @@ import org.w3c.dom.Element;
  */
 public class GeneradorDOM {
     private Document document;
-
-    public GeneradorDOM() throws ParserConfigurationException {
+    private Element mensaje = document.createElement("mensaje");
+    private Element emisor = document.createElement("emisor");
+    private Element receptor = document.createElement("receptor");
+    private Element tipo = document.createElement("tipo");
+    private Element cuerpo = document.createElement("cuerpo");
+    private Element direccionemisor = document.createElement("direccion");
+    private Element direccionreceptor = document.createElement("direccion");
+    private Element ipemisor = document.createElement("ip");
+    private Element ipreceptor = document.createElement("ip");
+    private Element puertoemisor = document.createElement("puerto");
+    private Element puertoreceptor = document.createElement("puerto");
+    private Element rolemisor = document.createElement("rol");
+    private Element rolemitente = document.createElement("rol");
+    
+    
+    public GeneradorDOM(String ipem, int puertoem, String rolem, String ipre, int puertore, String rolre, String tipo) throws ParserConfigurationException {
         DocumentBuilderFactory factoria = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factoria.newDocumentBuilder();
         document = builder.newDocument();
+        
+        
+        ipemisor.appendChild(document.createTextNode(ipem));
+        ipreceptor.appendChild(document.createTextNode(ipre));
+        puertoemisor.appendChild(document.createTextNode(String.valueOf(puertoem)));
+        puertoreceptor.appendChild(document.createTextNode(String.valueOf(puertore)));
+        rolemisor.appendChild(document.createTextNode(rolem));
+        rolemisor.appendChild(document.createTextNode(rolre));
+        this.tipo.appendChild(document.createTextNode(tipo));
+        
+        
+        
     }
     
     public void generarDocument(){
-        Element mensaje = document.createElement("mensaje");
+        
         document.appendChild(mensaje);
         
-        Element emisor = document.createElement("emisor");
         mensaje.appendChild(emisor);
         
-        Element receptor = document.createElement("recetor");
         mensaje.appendChild(receptor);
         
-        Element tipo = document.createElement("tipo");
         mensaje.appendChild(tipo);
         
-        Element cuerpo = document.createElement("cuerpo");
         mensaje.appendChild(cuerpo);
         
-        Element direccion = document.createElement("direccion");
-        emisor.appendChild(direccion);
-        receptor.appendChild(direccion);
+        emisor.appendChild(direccionemisor);
         
-        Element ip = document.createElement("ip");
-        direccion.appendChild(ip);
+        receptor.appendChild(direccionreceptor);
         
-        Element puerto = document.createElement("puerto");
-        direccion.appendChild(puerto);
+        direccionemisor.appendChild(ipemisor);
         
-        Element rol = document.createElement("rol");
-        emisor.appendChild(rol);
-        receptor.appendChild(rol);
+        direccionreceptor.appendChild(ipreceptor);
+        
+        direccionemisor.appendChild(puertoemisor);
+        
+        direccionreceptor.appendChild(puertoreceptor);
+        
+        emisor.appendChild(rolemisor);
+        
+        receptor.appendChild(rolreceptor);
     }
     
     public void generarXML() throws TransformerConfigurationException, IOException, TransformerException{
