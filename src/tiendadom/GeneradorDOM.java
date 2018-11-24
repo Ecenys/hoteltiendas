@@ -25,7 +25,7 @@ import org.w3c.dom.Element;
 public class GeneradorDOM {
     private Document document;
 
-    public GeneradorDOM(Document document) throws ParserConfigurationException {
+    public GeneradorDOM() throws ParserConfigurationException {
         DocumentBuilderFactory factoria = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factoria.newDocumentBuilder();
         document = builder.newDocument();
@@ -38,7 +38,7 @@ public class GeneradorDOM {
         Element emisor = document.createElement("emisor");
         mensaje.appendChild(emisor);
         
-        Element receptor = document.createElement("recetpr");
+        Element receptor = document.createElement("recetor");
         mensaje.appendChild(receptor);
         
         Element tipo = document.createElement("tipo");
