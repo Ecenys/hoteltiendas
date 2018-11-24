@@ -10,10 +10,11 @@ import org.xml.sax.SAXException;
 
 public class TiendaSAX {
 
-    public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException {
+    public void Sax(File file) throws ParserConfigurationException, SAXException, IOException {
+
         SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
         SAXParser saxParser = saxParserFactory.newSAXParser();
-        File file = new File("C:\\Users\\Oskar-MSI\\Desktop\\new2.xml"); //f = fichero
+        //File file = new File(f); //f = fichero, si se lee desde un archivo local, si no, quitar esta linea
         TiendaHandler th = new TiendaHandler();
         saxParser.parse(file, th); //file = fichero, dh = manejador
         
@@ -23,7 +24,7 @@ public class TiendaSAX {
         ArrayList<Producto> listaProductos = th.getListaProductos();
         String tipoEvento = th.getTipoEvento();
         
-        System.out.println("Emisor: "+emisor+", Receptor: "+receptor+", Tipo: "+tipo+", Lista de productos: "+listaProductos+", tipo de evento: "+tipoEvento);
+        //System.out.println("Emisor: "+emisor+", Receptor: "+receptor+", Tipo: "+tipo+", Lista de productos: "+listaProductos+", tipo de evento: "+tipoEvento);
         
     }
 }

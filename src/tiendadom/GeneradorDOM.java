@@ -23,82 +23,69 @@ import org.w3c.dom.Element;
  * @author Oskar-MSI
  */
 public class GeneradorDOM {
+
     private Document document;
-    private Element mensaje = document.createElement("mensaje");
-    private Element emisor = document.createElement("emisor");
-    private Element receptor = document.createElement("receptor");
-    private Element tipo = document.createElement("tipo");
-    private Element cuerpo = document.createElement("cuerpo");
-    private Element direccionemisor = document.createElement("direccion");
-    private Element direccionreceptor = document.createElement("direccion");
-    private Element ipemisor = document.createElement("ip");
-    private Element ipreceptor = document.createElement("ip");
-    private Element puertoemisor = document.createElement("puerto");
-    private Element puertoreceptor = document.createElement("puerto");
-    private Element rolemisor = document.createElement("rol");
-    private Element rolreceptor = document.createElement("rol");
-    
-    
-    public GeneradorDOM(String ipem, int puertoem, String rolem, String ipre, int puertore, String rolre, String tipo) throws ParserConfigurationException {
+
+    public GeneradorDOM() throws ParserConfigurationException {
         DocumentBuilderFactory factoria = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factoria.newDocumentBuilder();
         document = builder.newDocument();
-        
-        
-        ipemisor.appendChild(document.createTextNode(ipem));
-        ipreceptor.appendChild(document.createTextNode(ipre));
-        puertoemisor.appendChild(document.createTextNode(String.valueOf(puertoem)));
-        puertoreceptor.appendChild(document.createTextNode(String.valueOf(puertore)));
-        rolemisor.appendChild(document.createTextNode(rolem));
-        rolemisor.appendChild(document.createTextNode(rolre));
-        this.tipo.appendChild(document.createTextNode(tipo));
-        
-        
-        
     }
-    
-    public void generarDocument(){
-        
+
+    public void generarDocument(String ipemisor, int puertoemisor, String rolemisor, String ipreceptor, int puertoreceptor, String rolreceptor, String tipo, String cuerpo) {
+       
+        //Creación de nodos
+        Element mensaje = document.createElement("mensaje");
+        Element emisor = document.createElement("emisor");
+        Element receptor = document.createElement("receptor");
+        Element tipoo = document.createElement("tipo");
+        Element cuerpoo = document.createElement("cuerpo");
+        Element direccionem = document.createElement("direccion");
+        Element direccionre = document.createElement("direccion");
+        Element ipem = document.createElement("ip");
+        Element ipre = document.createElement("ip");
+        Element puertoem = document.createElement("puerto");
+        Element puertore = document.createElement("puerto");
+        Element rolem = document.createElement("rol");
+        Element rolre = document.createElement("rol");
+
+        //Definición de descendencias
         document.appendChild(mensaje);
-        
         mensaje.appendChild(emisor);
-        
         mensaje.appendChild(receptor);
+        mensaje.appendChild(tipoo);
+        mensaje.appendChild(cuerpoo);
+        emisor.appendChild(direccionem);
+        receptor.appendChild(direccionre);
+        direccionem.appendChild(ipem);
+        direccionre.appendChild(ipre);
+        direccionem.appendChild(puertoem);
+        direccionre.appendChild(puertore);
+        emisor.appendChild(rolem);
+        receptor.appendChild(rolre);
         
-        mensaje.appendChild(tipo);
-        
-        mensaje.appendChild(cuerpo);
-        
-        emisor.appendChild(direccionemisor);
-        
-        receptor.appendChild(direccionreceptor);
-        
-        direccionemisor.appendChild(ipemisor);
-        
-        direccionreceptor.appendChild(ipreceptor);
-        
-        direccionemisor.appendChild(puertoemisor);
-        
-        direccionreceptor.appendChild(puertoreceptor);
-        
-        emisor.appendChild(rolemisor);
-        
-        receptor.appendChild(rolreceptor);
+        //Definición de nodos hoja
+        ipem.appendChild(document.createTextNode(ipemisor));
+        ipre.appendChild(document.createTextNode(ipreceptor));
+        puertoem.appendChild(document.createTextNode(String.valueOf(puertoemisor)));
+        puertore.appendChild(document.createTextNode(String.valueOf(puertoreceptor)));
+        rolem.appendChild(document.createTextNode(rolemisor));
+        rolem.appendChild(document.createTextNode(rolreceptor));
+        tipoo.appendChild(document.createTextNode(tipo));
+        cuerpoo.appendChild(document.createTextNode(cuerpo));
     }
-    
-    public void generarXML() throws TransformerConfigurationException, IOException, TransformerException{
+
+    public void generarXML() throws TransformerConfigurationException, IOException, TransformerException {
         TransformerFactory factoria = TransformerFactory.newInstance();
         Transformer transformer = factoria.newTransformer();
-        
+
         Source source = new DOMSource(document); // origen de los datos
-        
+
         File file = new File("prueba"); //f = fichero, es para crear un fichero físico
         FileWriter fw = new FileWriter(file);
         PrintWriter pw = new PrintWriter(fw);
         Result result = new StreamResult(pw);
-        
-        
-                
+
         transformer.transform(source, result);
     }
 }
