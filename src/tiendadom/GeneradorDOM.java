@@ -36,7 +36,7 @@ public class GeneradorDOM {
     private Element puertoemisor = document.createElement("puerto");
     private Element puertoreceptor = document.createElement("puerto");
     private Element rolemisor = document.createElement("rol");
-    private Element rolemitente = document.createElement("rol");
+    private Element rolreceptor = document.createElement("rol");
     
     
     public GeneradorDOM(String ipem, int puertoem, String rolem, String ipre, int puertore, String rolre, String tipo) throws ParserConfigurationException {
