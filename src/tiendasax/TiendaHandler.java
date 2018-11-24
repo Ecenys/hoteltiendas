@@ -10,7 +10,7 @@ public class TiendaHandler extends DefaultHandler {
     private Emisor emisor;
     private Receptor receptor;
     private String tipo;
-    private ArrayList<Producto> listaProductos;
+    private ArrayList<Producto> listaProductos =  new ArrayList<Producto>();
     private String tipoEvento;
     
     //Necesarios para operar
@@ -48,7 +48,7 @@ public class TiendaHandler extends DefaultHandler {
             case "puerto":
                 puerto = Integer.parseInt(buffer.toString());
                 break;
-            case "idCLiente":
+            case "idCliente":
             case "id":
                 id = Integer.parseInt(buffer.toString());
                 break;
@@ -64,7 +64,7 @@ public class TiendaHandler extends DefaultHandler {
             case "cantidad":
                 producto.setCantidad(Integer.parseInt(buffer.toString()));
                 break;
-            case "listaProductos":
+            case "producto":
                 listaProductos.add(producto);
                 break;
             case "tipoEvento":
@@ -89,7 +89,9 @@ public class TiendaHandler extends DefaultHandler {
                 id = 0;
                 receptor = new Receptor();
                 break;
-            case "idCLiente":
+            case "idCliente":
+                buffer.delete(0, buffer.length());
+                break;
             case "tipoEvento":
             case "ip":
             case "puerto":
@@ -105,7 +107,9 @@ public class TiendaHandler extends DefaultHandler {
                 break;
             case "cuerpo":
                 try{
-                    tipo = attributes.getValue("orden");
+                    if (tipo == null) {
+                        tipo = attributes.getValue("orden");
+                    }
                 }catch (Exception ex) {}
                 break;
         }
