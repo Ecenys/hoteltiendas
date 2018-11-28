@@ -81,7 +81,7 @@ public class GeneradorDOM {
 
         Source source = new DOMSource(document); // origen de los datos
 
-        File file = new File("prueba"); //f = fichero, es para crear un fichero físico
+        File file = new File("prueba.xml"); //f = fichero, es para crear un fichero físico
         FileWriter fw = new FileWriter(file);
         PrintWriter pw = new PrintWriter(fw);
         Result result = new StreamResult(pw);

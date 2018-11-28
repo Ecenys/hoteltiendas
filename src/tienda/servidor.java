@@ -52,5 +52,49 @@ public class servidor extends conexion //Se hereda de conexion para hacer uso de
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+        
+        /*DataInputStream input;
+    	 BufferedInputStream bis;
+    	 BufferedOutputStream bos;
+    	 int in;
+    	 byte[] byteArray;
+    	 
+    	//crear dom 
+    	 TiendaDOM dom = new TiendaDOM();
+    	 dom.generadorDom.generarDocument("10.0.1.1", 80, "tienda", "10.0.1.2", 80, "cliente", "aviso", "valido");
+    	 try {
+			dom.generadorDom.generarXML();
+		} catch (TransformerConfigurationException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (TransformerException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+        
+        
+    	 //Fichero a transferir
+    	 final String filename = "c:\\test.pdf";
+    	 
+    	try{
+    	 final File localFile = new File( filename );
+    	 Socket clicli = new Socket("localhost", 5000);
+    	 bis = new BufferedInputStream(new FileInputStream(localFile));
+    	 bos = new BufferedOutputStream(clicli.getOutputStream());
+    	 //Enviamos el nombre del fichero
+    	 DataOutputStream dos=new DataOutputStream(clicli.getOutputStream());
+    	 dos.writeUTF(localFile.getName());
+    	 //Enviamos el fichero
+    	 byteArray = new byte[8192];
+    	 while ((in = bis.read(byteArray)) != -1){
+    	 bos.write(byteArray,0,in);
+    	 }
+    	 
+    	bis.close();
+    	 bos.close();
+    	 
+    	}catch ( Exception e ) {
+    	 System.err.println(e);
+    	 }*/
     }
 }
