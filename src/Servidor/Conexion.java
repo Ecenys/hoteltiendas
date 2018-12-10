@@ -1,11 +1,11 @@
-package tienda;
+package Servidor;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 
-public class conexion
+public class Conexion
 {
     private final int PUERTO = 80; //Puerto para la conexion
     private final String HOST = "localhost"; //Host para la conexion
@@ -14,7 +14,7 @@ public class conexion
     protected Socket cs; //Socket del cliente
     protected DataOutputStream salidaServidor, salidaCliente; //Flujo de datos de salida
 
-    public conexion(String tipo) throws IOException //Constructor
+    public Conexion(String tipo) throws IOException //Constructor
     {
         if(tipo.equalsIgnoreCase("servidor"))
         {

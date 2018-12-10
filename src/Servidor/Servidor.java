@@ -1,4 +1,4 @@
-package tienda;
+package Servidor;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -8,11 +8,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import tiendasax.*;
 
-public class servidor extends conexion //Se hereda de conexion para hacer uso de los sockets y dem�s
+public class Servidor extends Conexion //Se hereda de conexion para hacer uso de los sockets y dem�s
+ //Se hereda de conexion para hacer uso de los sockets y dem�s
 {
     TiendaSAX sax = new TiendaSAX();
 
-    public servidor() throws IOException {
+    public Servidor() throws IOException {
         super("servidor");
     } //Se usa el constructor para servidor de Conexion
 

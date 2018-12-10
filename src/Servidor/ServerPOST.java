@@ -1,4 +1,4 @@
-package tienda;
+package Servidor;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -16,7 +16,7 @@ import tiendadom.*;
 
 public class ServerPOST {
 
-    private static final String POST_URLInitial = "10.0.10.10:80/init";
+    private static final String POST_URLInitial = "http://10.0.69.39:80/init";
     private String POST_URL;
 
     //Constructor
@@ -29,7 +29,7 @@ public class ServerPOST {
         GeneradorDOM generadorDom = new GeneradorDOM();
         generadorDom.generarDocument("10.0.1.1", 80, "tienda", "10.0.1.2", 80, "cliente", "aviso", "valido");
         try {
-            generadorDom.generarXML();
+            generadorDom.generarXML("prueba.xml");
         } catch (TransformerConfigurationException e1) {
             // TODO Auto-generated catch block
             e1.printStackTrace();
@@ -79,9 +79,9 @@ public class ServerPOST {
     public void sendInitialPOST() throws IOException, ParserConfigurationException, TransformerException {
 
         GeneradorDOM generadorDom = new GeneradorDOM();
-        generadorDom.generarDocument("10.0.1.1", 80, "tienda", "10.0.1.2", 80, "cliente", "aviso", "<tipoEvento>Evento</tipoEvento> <contenido>Connect</contenido>");
+        generadorDom.generarDocument("10.0.69.175", 80, "tienda", "10.0.69.39", 80, "monitor", "evento", "<tipoEvento>Evento</tipoEvento> <contenido>Connect</contenido>");
         try {
-            generadorDom.generarXML();
+            generadorDom.generarXML("prueba.xml");
         } catch (TransformerConfigurationException e1) {
             // TODO Auto-generated catch block
             e1.printStackTrace();

@@ -1,4 +1,4 @@
-package tienda;
+package Servidor;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -12,18 +12,20 @@ import java.net.URL;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.xml.sax.SAXException;
-import tienda.ServerPOST;
+import Servidor.ServerPOST;
 import tiendasax.*;
 
 public class ServerHTTP {
 
-    private static final String GET_URL = "10.0.10.1";
+    private static final String GET_URL = "http://10.0.69.39:80/init";
 
-    public static void main(String[] args) throws IOException, ParserConfigurationException, TransformerException {
+    public static void main(String[] args) throws IOException, ParserConfigurationException, TransformerException, SAXException {
         ServerPOST sp = new ServerPOST();
         sp.sendInitialPOST();
-
-        while (true) {
+    }
+    
+    public void init() throws IOException, ParserConfigurationException, SAXException{
+            while (true) {
             sendGET();
         }
     }

@@ -1,24 +1,27 @@
 package tiendasax;
 
+import tienda.Producto;
 import java.util.ArrayList;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 public class TiendaHandler extends DefaultHandler {
+
     //Necesarios para leer
     private Emisor emisor;
     private Receptor receptor;
     private String tipo;
-    private ArrayList<Producto> listaProductos =  new ArrayList<Producto>();
+    private ArrayList<Producto> listaProductos = new ArrayList<Producto>();
     private String tipoEvento;
-    
+    private int nuevoID;
+
     //Necesarios para operar
     private String rol, ip;
     private int puerto, id;
     private Producto producto;
     private StringBuilder buffer = new StringBuilder();
-    
+
     //Parseador
     @Override
     public void characters(char[] ch, int start, int length) throws SAXException {
@@ -29,7 +32,7 @@ public class TiendaHandler extends DefaultHandler {
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException {
         super.endElement(uri, localName, qName); //To change body of generated methods, choose Tools | Templates.
-        switch(qName){
+        switch (qName) {
             case "emisor":
                 emisor.setIp(ip);
                 emisor.setPuerto(puerto);
@@ -70,13 +73,15 @@ public class TiendaHandler extends DefaultHandler {
             case "tipoEvento":
                 tipoEvento = buffer.toString();
                 break;
+            case "nuevoID":
+                nuevoID = Integer.parseInt(buffer.toString());
         }
     }
 
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
         super.startElement(uri, localName, qName, attributes); //To change body of generated methods, choose Tools | Templates.
-        switch(qName){
+        switch (qName) {
             case "emisor":
                 ip = null;
                 puerto = 0;
@@ -92,6 +97,7 @@ public class TiendaHandler extends DefaultHandler {
             case "idCliente":
                 buffer.delete(0, buffer.length());
                 break;
+            case "nuevoID":
             case "tipoEvento":
             case "ip":
             case "puerto":
@@ -106,11 +112,12 @@ public class TiendaHandler extends DefaultHandler {
                 producto = new Producto();
                 break;
             case "cuerpo":
-                try{
+                try {
                     if (tipo == null) {
                         tipo = attributes.getValue("orden");
                     }
-                }catch (Exception ex) {}
+                } catch (Exception ex) {
+                }
                 break;
         }
     }
@@ -135,5 +142,9 @@ public class TiendaHandler extends DefaultHandler {
     public String getTipoEvento() {
         return tipoEvento;
     }
-    
+
+    public int getNuevoID() {
+        return nuevoID;
+    }
+
 }
