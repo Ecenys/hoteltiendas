@@ -17,7 +17,7 @@ import tiendasax.*;
 
 public class ServerHTTP {
 
-    private static final String GET_URL = "http://10.0.69.39:80/init";
+    private static final String GET_URL = "http://10.0.69.39:3000/init";
 
     public static void main(String[] args) throws IOException, ParserConfigurationException, TransformerException, SAXException {
         ServerPOST sp = new ServerPOST();

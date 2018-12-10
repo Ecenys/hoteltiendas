@@ -36,6 +36,8 @@ public class GeneradorDOM {
     private Date date = new Date();
     private DateFormat horaformato = new SimpleDateFormat("HH:mm:ss");
     private String horaa = horaformato.format(date);
+    private DateFormat fechaformato = new SimpleDateFormat("yy-MM-dd");
+    private String fechaa = fechaformato.format(date);
 
     public GeneradorDOM() throws ParserConfigurationException {
         DocumentBuilderFactory factoria = DocumentBuilderFactory.newInstance();
@@ -60,12 +62,14 @@ public class GeneradorDOM {
         Element rolem = document.createElement("rol");
         Element rolre = document.createElement("rol");
         Element hora = document.createElement("hora");
+        Element fecha = document.createElement("fecha");
 
         //Definicion de descendencias
         document.appendChild(mensaje);
         mensaje.appendChild(emisor);
         mensaje.appendChild(receptor);
         mensaje.appendChild(tipoo);
+        mensaje.appendChild(fecha);
         mensaje.appendChild(hora);
         mensaje.appendChild(cuerpoo);
         emisor.appendChild(direccionem);
@@ -83,10 +87,11 @@ public class GeneradorDOM {
         puertoem.appendChild(document.createTextNode(String.valueOf(puertoemisor)));
         puertore.appendChild(document.createTextNode(String.valueOf(puertoreceptor)));
         rolem.appendChild(document.createTextNode(rolemisor));
-        rolem.appendChild(document.createTextNode(rolreceptor));
+        rolre.appendChild(document.createTextNode(rolreceptor));
         tipoo.appendChild(document.createTextNode(tipo));
         cuerpoo.appendChild(document.createTextNode(cuerpo));
         hora.appendChild(document.createTextNode(horaa));
+        fecha.appendChild(document.createTextNode(fechaa));
     }
 
     public void generarXML(String archivo) throws TransformerConfigurationException, IOException, TransformerException {

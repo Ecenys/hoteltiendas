@@ -1,6 +1,7 @@
 package Servidor;
 
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -16,7 +17,7 @@ import tiendadom.*;
 
 public class ServerPOST {
 
-    private static final String POST_URLInitial = "http://10.0.69.39:80/init";
+    private static final String POST_URLInitial = "http://10.0.69.39:3000/init";
     private String POST_URL;
 
     //Constructor
@@ -79,9 +80,9 @@ public class ServerPOST {
     public void sendInitialPOST() throws IOException, ParserConfigurationException, TransformerException {
 
         GeneradorDOM generadorDom = new GeneradorDOM();
-        generadorDom.generarDocument("10.0.69.175", 80, "tienda", "10.0.69.39", 80, "monitor", "evento", "<tipoEvento>Evento</tipoEvento> <contenido>Connect</contenido>");
+        generadorDom.generarDocument("8.8.8.8", 80, "tienda", "10.0.69.39", 3000, "monitor", "evento", "<tipoEvento>Evento</tipoEvento> <contenido>Connect</contenido>");
         try {
-            generadorDom.generarXML("prueba.xml");
+            generadorDom.generarXML("initial.xml");
         } catch (TransformerConfigurationException e1) {
             // TODO Auto-generated catch block
             e1.printStackTrace();
@@ -93,18 +94,15 @@ public class ServerPOST {
         URL obj = new URL(POST_URLInitial);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
         con.setRequestMethod("POST");
-
+        con.setRequestProperty("Content-Type", "application/xml;charset=utf-8");
         // For POST only - START
-        String cadena;
-        FileReader fileReader = new FileReader("prueba.xml");
+        FileReader fileReader = new FileReader("initial.xml");
         BufferedReader b = new BufferedReader(fileReader);
         con.setDoOutput(true);
-        OutputStream os = con.getOutputStream();
-        while ((cadena = b.readLine()) != null) {
-            os.write(cadena.getBytes());
-        }
-        os.flush();
-        os.close();
+        DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+        wr.writeBytes(b.readLine());
+        wr.flush();
+        wr.close();
 
         // For POST only - END
         int responseCode = con.getResponseCode();
