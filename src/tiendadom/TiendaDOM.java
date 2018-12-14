@@ -9,7 +9,7 @@ import javax.xml.parsers.ParserConfigurationException;
 public class TiendaDOM {
     public static void main(String[] args) throws Exception{
         GeneradorDOM generadorDom = new GeneradorDOM();
-        generadorDom.generarDocument("10.0.1.1", 80, "tienda", "10.0.1.2", 80, "cliente", "aviso", "<tipoEvento>ACK</tipoEvento><contenido>Agente iniciado correctamente</contenido>"); //prueba de llamada
+        generadorDom.generarDocumento("10.0.1.1", 80, 10, "tienda", "10.0.1.2", 80, 20, "cliente", "aviso", "<tipoEvento>ACK</tipoEvento><contenido>Agente iniciado correctamente</contenido>"); //prueba de llamada
         generadorDom.generarXML("prueba.xml");
         
     }

@@ -17,7 +17,8 @@ public class TiendaSAX {
     ArrayList<Producto> listaProductos;
     String tipoEvento;
     int nuevoID;
-
+    ArrayList<Integer> listaTiendas;
+    
     public void Sax(File file) throws ParserConfigurationException, SAXException, IOException {
 
         SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
@@ -58,6 +59,10 @@ public class TiendaSAX {
 
     public int getNuevoID() {
         return nuevoID;
+    }
+
+    public ArrayList<Integer> getListaTiendas() {
+        return listaTiendas;
     }
 
 }

@@ -7,7 +7,7 @@ package tiendasax;
 
 /**
  *
- * @author Oskar-MSI
+ * @author Oskar-C97
  */
 public class Emisor {
     private String ip;

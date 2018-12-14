@@ -45,12 +45,16 @@ public class GeneradorDOM {
         document = builder.newDocument();
     }
 
-    public void generarDocument(String ipemisor, int puertoemisor, String rolemisor, String ipreceptor, int puertoreceptor, String rolreceptor, String tipo, String cuerpo) {
+    public void generarDocumento(String ipemisor, int puertoemisor, int idemisor, String rolemisor, String ipreceptor, int puertoreceptor, int idreceptor, String rolreceptor, String tipo, String cuerpo) {
 
         //Creacion de nodos
         Element mensaje = document.createElement("mensaje");
         Element emisor = document.createElement("emisor");
         Element receptor = document.createElement("receptor");
+        //if (idemisor != 0)
+            Element idem = document.createElement("id");
+        //if (idreceptor != 0)
+            Element idre = document.createElement("id");
         Element tipoo = document.createElement("tipo");
         Element cuerpoo = document.createElement("cuerpo");
         Element direccionem = document.createElement("direccion");
@@ -78,6 +82,8 @@ public class GeneradorDOM {
         direccionre.appendChild(ipre);
         direccionem.appendChild(puertoem);
         direccionre.appendChild(puertore);
+        direccionem.appendChild(idem);
+        direccionre.appendChild(idre);
         emisor.appendChild(rolem);
         receptor.appendChild(rolre);
 
@@ -92,6 +98,9 @@ public class GeneradorDOM {
         cuerpoo.appendChild(document.createTextNode(cuerpo));
         hora.appendChild(document.createTextNode(horaa));
         fecha.appendChild(document.createTextNode(fechaa));
+        idem.appendChild(document.createTextNode(String.valueOf(idemisor)));
+        idre.appendChild(document.createTextNode(String.valueOf(idreceptor)));
+        
     }
 
     public void generarXML(String archivo) throws TransformerConfigurationException, IOException, TransformerException {

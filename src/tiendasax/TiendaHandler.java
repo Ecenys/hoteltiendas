@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
+import tienda.Tienda;
 
 public class TiendaHandler extends DefaultHandler {
 
@@ -15,12 +16,14 @@ public class TiendaHandler extends DefaultHandler {
     private ArrayList<Producto> listaProductos = new ArrayList<Producto>();
     private String tipoEvento;
     private int nuevoID;
+    private ArrayList<Integer> listaTiendas = new ArrayList<Integer>();
 
     //Necesarios para operar
     private String rol, ip;
     private int puerto, id;
     private Producto producto;
     private StringBuilder buffer = new StringBuilder();
+    private int aux;
 
     //Parseador
     @Override
@@ -32,50 +35,57 @@ public class TiendaHandler extends DefaultHandler {
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException {
         super.endElement(uri, localName, qName); //To change body of generated methods, choose Tools | Templates.
-        switch (qName) {
-            case "emisor":
-                emisor.setIp(ip);
-                emisor.setPuerto(puerto);
-                emisor.setId(id);
-                emisor.setRol(rol);
-                break;
-            case "receptor":
-                receptor.setIp(ip);
-                receptor.setPuerto(puerto);
-                receptor.setId(id);
-                receptor.setRol(rol);
-                break;
-            case "ip":
-                ip = buffer.toString();
-                break;
-            case "puerto":
-                puerto = Integer.parseInt(buffer.toString());
-                break;
-            case "idCliente":
-            case "id":
-                id = Integer.parseInt(buffer.toString());
-                break;
-            case "rol":
-                rol = buffer.toString();
-                break;
-            case "tipo":
-                tipo = buffer.toString();
-                break;
-            case "nombre":
-                producto.setNombre(buffer.toString());
-                break;
-            case "cantidad":
-                producto.setCantidad(Integer.parseInt(buffer.toString()));
-                break;
-            case "producto":
-                listaProductos.add(producto);
-                break;
-            case "tipoEvento":
-                tipoEvento = buffer.toString();
-                break;
-            case "nuevoID":
-                nuevoID = Integer.parseInt(buffer.toString());
-        }
+        try {
+            switch (qName) {
+                case "emisor":
+                    emisor.setIp(ip);
+                    emisor.setPuerto(puerto);
+                    emisor.setId(id);
+                    emisor.setRol(rol);
+                    break;
+                case "receptor":
+                    receptor.setIp(ip);
+                    receptor.setPuerto(puerto);
+                    receptor.setId(id);
+                    receptor.setRol(rol);
+                    break;
+                case "ip":
+                    ip = buffer.toString();
+                    break;
+                case "tienda":
+                    listaTiendas.add(id);
+                    id = aux;
+                    break;
+                case "puerto":
+                    puerto = Integer.parseInt(buffer.toString());
+                    break;
+                case "idCliente":
+                case "id":
+                    id = Integer.parseInt(buffer.toString());
+                    break;
+                case "rol":
+                    rol = buffer.toString();
+                    break;
+                case "tipo":
+                    tipo = buffer.toString();
+                    break;
+                case "nombre":
+                    producto.setNombre(buffer.toString());
+                    break;
+                case "cantidad":
+                    producto.setCantidad(Integer.parseInt(buffer.toString()));
+                    break;
+                case "producto":
+                    listaProductos.add(producto);
+                    break;
+                case "tipoEvento":
+                    tipoEvento = buffer.toString();
+                    break;
+                case "nuevoID":
+                    nuevoID = Integer.parseInt(buffer.toString());
+                    break;
+            }
+        } catch (NumberFormatException e) {}
     }
 
     @Override
@@ -95,8 +105,6 @@ public class TiendaHandler extends DefaultHandler {
                 receptor = new Receptor();
                 break;
             case "idCliente":
-                buffer.delete(0, buffer.length());
-                break;
             case "nuevoID":
             case "tipoEvento":
             case "ip":
@@ -107,6 +115,10 @@ public class TiendaHandler extends DefaultHandler {
             case "nombre":
             case "cantidad":
                 buffer.delete(0, buffer.length());
+                break;
+            case "tienda":
+                buffer.delete(0, buffer.length());
+                aux = id;
                 break;
             case "producto":
                 producto = new Producto();
@@ -145,6 +157,10 @@ public class TiendaHandler extends DefaultHandler {
 
     public int getNuevoID() {
         return nuevoID;
+    }
+
+    public ArrayList<Integer> getListaTiendas() {
+        return listaTiendas;
     }
 
 }

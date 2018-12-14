@@ -1,47 +1,51 @@
 package Servidor;
 
+import com.sun.net.httpserver.HttpServer;
 import tienda.Tienda;
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.xml.sax.SAXException;
 import tienda.Producto;
 
+//Clase principal que inicializa las distintas etapas del servidor
+public class Main {
 
-
-//Clase principal que hara uso del servidor
-public class Main
-{
-    public static void main(String[] args) throws IOException, ParserConfigurationException, SAXException, TransformerException, InterruptedException
-    {
-        ServerHTTP serv = new ServerHTTP(); //Se crea el servidor
-        ServerPOST post = new ServerPOST();
-//        PrepareEmulation();
-        post.sendInitialPOST();
-//        while(){
-//            Thread.sleep(1000);
-//            //Esperar mensaje de inicio de simulación
-//        }
-//        System.out.println("Iniciando servidor\n");
-//        serv.init(); //Se inicia el servidor
-    }
+    private static int port = 80;
+    private static ArrayList<Tienda> listaTiendas = new ArrayList<Tienda>();
+    private static ArrayList<Producto> listaProductos = new ArrayList<Producto>();
     
-    private static void PrepareEmulation(){
-        ArrayList<Tienda> listaTiendas = new ArrayList<Tienda>();
-        ArrayList<Producto> listaProductos = new ArrayList<Producto>();
-        
-        //Crear tiendas
-//        int r = (int) (Math.random() * 10) + 1;
-//        for (int i = 0; i < r; i++) {
-//            Tienda tienda = new Tienda();
-//            int id = //se pide id a monitor y se asigna nuevoID (comprobar que tipoEvento es ACK)
-//            tienda.setId(id);
-//            listaProductos = // se recibe la lista de productos automaticamente, mediante otro xml con tipo inicializacion
-//            tienda.setAlmacen(listaProductos);
-//            // Enviar confirmacion con cuerpo: <tipoEvento>ACK</tipoEvento><contenido>Agente iniciado correctamente</contenido>
-//            listaTiendas.add(tienda);
-//        }
-        
+    public static void main(String[] args) throws IOException, ParserConfigurationException, SAXException, TransformerException, InterruptedException {
+        System.out.println("Iniciando simulación, asignando tiendas");
+        PrepareEmulation();
+        System.out.println("ID asignados, esperando inicialización");
+        Listening();
     }
+
+    private static void PrepareEmulation() throws IOException, ParserConfigurationException, TransformerException, SAXException {
+        //Instanciamos el objeto post, para poder crear y mandar el post de inicialización
+        SendPOST post = new SendPOST();
+
+        //Creacion de N tiendas
+        int n = (int) (Math.random() * 11) + 5; // Esto crea un numero N entre 5 y 15 (incluidos)
+        for (int i = 0; i < n; i++) {
+            Tienda tienda = new Tienda();
+            int id = post.sendInitialPOST();//se pide id a monitor y se asigna nuevoID (comprobar que tipoEvento es ACK)
+            tienda.setId(id);
+            listaTiendas.add(tienda);
+        }
+
+    }
+
+    private static void Listening() throws IOException {
+        HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
+        System.out.println("Servidor esperando en puerto" + port);
+        server.createContext("", new ServerHTTP(listaTiendas));
+        server.setExecutor(null);
+        server.start();
+    }
+
+    
 }

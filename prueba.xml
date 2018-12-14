@@ -1,1 +1,25 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><mensaje><emisor><direccion><ip>10.0.1.1</ip><puerto>80</puerto></direccion><rol>tiendacliente</rol></emisor><receptor><direccion><ip>10.0.1.2</ip><puerto>80</puerto></direccion><rol/></receptor><tipo>aviso</tipo><fecha>18-12-10</fecha><hora>12:08:12</hora><cuerpo><tipoEvento>ACK</tipoEvento><contenido>Agente iniciado correctamente</contenido></cuerpo></mensaje>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><mensaje>
+    <emisor>
+        <direccion>
+            <ip>10.0.1.1</ip>
+            <puerto>80</puerto>
+            <id>10</id>
+        </direccion>
+        <rol>tienda</rol>
+    </emisor>
+    <receptor>
+        <direccion>
+            <ip>10.0.1.2</ip>
+            <puerto>80</puerto>
+            <id>20</id>
+        </direccion>
+        <rol>cliente</rol>
+    </receptor>
+    <tipo>aviso</tipo>
+    <fecha>18-12-14</fecha>
+    <hora>13:45:54</hora>
+    <cuerpo>
+        <tipoEvento>ACK</tipoEvento>
+        <contenido>Agente iniciado correctamente</contenido>
+    </cuerpo>
+</mensaje>

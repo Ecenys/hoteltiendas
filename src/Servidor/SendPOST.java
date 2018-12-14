@@ -1,6 +1,7 @@
 package Servidor;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileReader;
@@ -8,29 +9,36 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
+import org.xml.sax.SAXException;
 import tiendadom.*;
+import tiendasax.TiendaSAX;
 
-public class ServerPOST {
+public class SendPOST {
 
-    private static final String POST_URLInitial = "http://10.0.69.39:3000/init";
+    private static final String iplocal = "10.0.69.175";
+    private static final int puertolocal = 80;
+    private static final String ipmonitor = "10.0.69.39";
+    private static final int puertomonitor = 3000;
+    private static final String POST_URLInitial = "http://"+ipmonitor+":"+puertomonitor+"/init";
     private String POST_URL;
 
     //Constructor
-    public ServerPOST() {
+    public SendPOST() {
 
     }
 
-    public void sendPOST() throws IOException, ParserConfigurationException, TransformerException {
+    public void sendPOST(int id, String ipdestino, int puertodestino, int iddestino, String roldestino, String tipo, String cuerpo) throws IOException, ParserConfigurationException, TransformerException {
 
         GeneradorDOM generadorDom = new GeneradorDOM();
-        generadorDom.generarDocument("10.0.1.1", 80, "tienda", "10.0.1.2", 80, "cliente", "aviso", "valido");
+        generadorDom.generarDocumento(iplocal, puertolocal, id, "tienda", ipdestino, iddestino, puertodestino, roldestino, tipo, cuerpo);
         try {
-            generadorDom.generarXML("prueba.xml");
+            generadorDom.generarXML("sendPost.xml");
         } catch (TransformerConfigurationException e1) {
             // TODO Auto-generated catch block
             e1.printStackTrace();
@@ -42,6 +50,7 @@ public class ServerPOST {
         URL obj = new URL(POST_URL);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
         con.setRequestMethod("POST");
+        con.setRequestProperty("Content-Type", "application/xml;charset=utf-8");
 
         // For POST only - START
         String cadena;
@@ -75,14 +84,18 @@ public class ServerPOST {
         } else {
             System.out.println("POST request not worked");
         }
+        
+        //Enviar duplicado a monitor automaticamente
+        if(roldestino != "monitor")
+            sendPOST(id, ipmonitor, puertomonitor, 0, "monitor", tipo, cuerpo);
     }
 
-    public void sendInitialPOST() throws IOException, ParserConfigurationException, TransformerException {
+    public int sendInitialPOST() throws IOException, ParserConfigurationException, TransformerException, SAXException {
 
         GeneradorDOM generadorDom = new GeneradorDOM();
-        generadorDom.generarDocument("8.8.8.8", 80, "tienda", "10.0.69.39", 3000, "monitor", "evento", "<tipoEvento>Evento</tipoEvento> <contenido>Connect</contenido>");
+        generadorDom.generarDocumento(iplocal, puertolocal, 0, "tienda", "10.0.69.39", 3000, 0, "monitor", "evento", "<tipoEvento>Evento</tipoEvento> <contenido>Connect</contenido>");
         try {
-            generadorDom.generarXML("initial.xml");
+            generadorDom.generarXML("sendPost.xml");
         } catch (TransformerConfigurationException e1) {
             // TODO Auto-generated catch block
             e1.printStackTrace();
@@ -120,9 +133,18 @@ public class ServerPOST {
             in.close();
 
             // print result
-            System.out.println(response.toString());
+            File f = new File("post.xml");
+            BufferedWriter out = new BufferedWriter(new FileWriter("post.xml"));
+            out.write(response.toString());
+            out.flush();
+            out.close();
+            
+            TiendaSAX s = new TiendaSAX();
+            s.Sax(f);
+            return s.getNuevoID();
         } else {
             System.out.println("POST request not worked");
+            return 0;
         }
     }
 
