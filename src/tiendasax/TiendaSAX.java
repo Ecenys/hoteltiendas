@@ -37,6 +37,7 @@ public class TiendaSAX {
         //System.out.println("Emisor: "+emisor+", Receptor: "+receptor+", Tipo: "+tipo+", Lista de productos: "+listaProductos+", tipo de evento: "+tipoEvento);
     }
 
+    // Gets
     public Emisor getEmisor() {
         return emisor;
     }

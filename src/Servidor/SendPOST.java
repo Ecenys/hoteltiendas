@@ -25,27 +25,18 @@ public class SendPOST {
     private static final int puertolocal = 80;
     private static final String ipmonitor = "10.0.69.39";
     private static final int puertomonitor = 3000;
-    private static final String POST_URLInitial = "http://"+ipmonitor+":"+puertomonitor+"/init";
+    private static final String POST_URLInitial = "http://" + ipmonitor + ":" + puertomonitor + "/init";
     private String POST_URL;
+    private GeneradorDOM generadorDom;
 
     //Constructor
     public SendPOST() {
-
     }
 
     public void sendPOST(int id, String ipdestino, int puertodestino, int iddestino, String roldestino, String tipo, String cuerpo) throws IOException, ParserConfigurationException, TransformerException {
 
-        GeneradorDOM generadorDom = new GeneradorDOM();
-        generadorDom.generarDocumento(iplocal, puertolocal, id, "tienda", ipdestino, iddestino, puertodestino, roldestino, tipo, cuerpo);
-        try {
-            generadorDom.generarXML("sendPost.xml");
-        } catch (TransformerConfigurationException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
-        } catch (TransformerException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
-        }
+        generadorDom = new GeneradorDOM();
+        GeneraDOM(generadorDom, id, ipdestino, iddestino, puertodestino, roldestino, tipo, cuerpo);
 
         URL obj = new URL(POST_URL);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -84,16 +75,15 @@ public class SendPOST {
         } else {
             System.out.println("POST request not worked");
         }
-        
+
         //Enviar duplicado a monitor automaticamente
-        if(roldestino != "monitor")
+        if (roldestino != "monitor") {
             sendPOST(id, ipmonitor, puertomonitor, 0, "monitor", tipo, cuerpo);
+        }
     }
 
-    public int sendInitialPOST() throws IOException, ParserConfigurationException, TransformerException, SAXException {
-
-        GeneradorDOM generadorDom = new GeneradorDOM();
-        generadorDom.generarDocumento(iplocal, puertolocal, 0, "tienda", "10.0.69.39", 3000, 0, "monitor", "evento", "<tipoEvento>Evento</tipoEvento> <contenido>Connect</contenido>");
+    public void GeneraDOM(GeneradorDOM generadorDom, int id, String ipdestino, int iddestino, int puertodestino, String roldestino, String tipo, String cuerpo) throws IOException {
+        generadorDom.generarDocumento(iplocal, puertolocal, id, "tienda", ipdestino, iddestino, puertodestino, roldestino, tipo, cuerpo);
         try {
             generadorDom.generarXML("sendPost.xml");
         } catch (TransformerConfigurationException e1) {
@@ -103,6 +93,14 @@ public class SendPOST {
             // TODO Auto-generated catch block
             e1.printStackTrace();
         }
+    }
+
+    public int sendInitialPOST() throws IOException, ParserConfigurationException, TransformerException, SAXException {
+
+        GeneradorDOM generadorDom = new GeneradorDOM();
+        GeneraDOM(generadorDom, 0, "10.0.69.39", 3000, 0, "monitor", "evento", "<tipoEvento>Evento</tipoEvento> <contenido>Connect</contenido>");
+        // TODO Auto-generated catch block
+        // TODO Auto-generated catch block
 
         URL obj = new URL(POST_URLInitial);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -138,7 +136,7 @@ public class SendPOST {
             out.write(response.toString());
             out.flush();
             out.close();
-            
+
             TiendaSAX s = new TiendaSAX();
             s.Sax(f);
             return s.getNuevoID();

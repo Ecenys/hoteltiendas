@@ -19,7 +19,7 @@ public class Main {
     
     public static void main(String[] args) throws IOException, ParserConfigurationException, SAXException, TransformerException, InterruptedException {
         System.out.println("Iniciando simulación, asignando tiendas");
-        PrepareEmulation();
+        //PrepareEmulation();
         System.out.println("ID asignados, esperando inicialización");
         Listening();
     }
@@ -39,10 +39,10 @@ public class Main {
 
     }
 
-    private static void Listening() throws IOException {
+    private static void Listening() throws IOException, ParserConfigurationException {
         HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
         System.out.println("Servidor esperando en puerto" + port);
-        server.createContext("", new ServerHTTP(listaTiendas));
+        server.createContext("/", new ServerHTTP(listaTiendas));
         server.setExecutor(null);
         server.start();
     }
