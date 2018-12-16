@@ -11,6 +11,7 @@ import org.xml.sax.SAXException;
 
 /**
  * Clase principal que inicializa las distintas etapas del servidor
+ * GPL-3.0
  * GNU GENERAL PUBLIC LICENSE
  * @author Oskar-C97
  */ 
