@@ -11,14 +11,23 @@ import org.xml.sax.SAXException;
 
 public class TiendaSAX {
 
-    Emisor emisor;
-    Receptor receptor;
-    String tipo;
-    ArrayList<Producto> listaProductos;
-    String tipoEvento;
-    int nuevoID;
-    ArrayList<Integer> listaTiendas;
-    
+    private Emisor emisor;
+    private Receptor receptor;
+    private String tipo;
+    private ArrayList<Producto> listaProductos;
+    private String tipoEvento;
+    private int nuevoID = 0;
+    private ArrayList<Integer> listaTiendas;
+
+    /**
+     * -Metodo SAX- Inicializador de la secuencia de parseador SAX, sele pasa un
+     * file que contenga un xml, lo trata y devuelve los valores asignados
+     *
+     * @param file
+     * @throws ParserConfigurationException
+     * @throws SAXException
+     * @throws IOException
+     */
     public void Sax(File file) throws ParserConfigurationException, SAXException, IOException {
 
         SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
@@ -27,6 +36,7 @@ public class TiendaSAX {
         TiendaHandler th = new TiendaHandler();
         saxParser.parse(file, th); //file = fichero, dh = manejador
 
+        //Guardamos los valores parseados del XML en sus respectivas variables
         emisor = th.getEmisor();
         receptor = th.getReceptor();
         tipo = th.getTipo();
@@ -37,6 +47,7 @@ public class TiendaSAX {
         //System.out.println("Emisor: "+emisor+", Receptor: "+receptor+", Tipo: "+tipo+", Lista de productos: "+listaProductos+", tipo de evento: "+tipoEvento);
     }
 
+    // Gets
     public Emisor getEmisor() {
         return emisor;
     }
