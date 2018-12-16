@@ -1,18 +1,21 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><mensaje>
-    <emisor>
-        <direccion>
-            <ip>10.0.1.1</ip>
-            <puerto>80</puerto>
-        </direccion>
-        <rol>tiendacliente</rol>
-    </emisor>
-    <receptor>
-        <direccion>
-            <ip>10.0.1.2</ip>
-            <puerto>80</puerto>
-        </direccion>
-        <rol/>
-    </receptor>
-    <tipo>aviso</tipo>
-    <cuerpo>valido</cuerpo>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><mensaje>    
+    <emisor>        
+        <direccion>            
+            <ip>192.168.1.1</ip>            
+            <puerto>80</puerto>        
+        </direccion>        
+        <rol>Monitor</rol>    
+    </emisor>    
+    <receptor>        
+        <direccion>            
+            <ip>192.168.1.2</ip>            
+            <puerto>80</puerto>            
+            <id>11</id>        
+        </direccion>        
+        <rol>Tienda</rol>    
+    </receptor>    
+    <tipo>prueba</tipo>    
+    <fecha>2018-10-20</fecha>    
+    <hora>15:58:32</hora>    
+    <cuerpo>    </cuerpo>
 </mensaje>

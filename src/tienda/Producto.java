@@ -7,7 +7,7 @@ package tienda;
 
 /**
  *
- * @author Oskar-MSI
+ * @author Oskar-C97
  */
 public class Producto {
     private String nombre;

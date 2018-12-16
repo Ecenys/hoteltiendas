@@ -34,11 +34,20 @@ public class ServerHTTP implements HttpHandler {
     String response = "";
     private GeneradorDOM generadorDom;
 
+    //Constructor
     public ServerHTTP(ArrayList<Tienda> listaTiendas) throws ParserConfigurationException {
         this.listaTiendas = listaTiendas;
         generadorDom = new GeneradorDOM();
     }
 
+    /**
+     * -Metodo handle- Espera y recivimiento de peticion por parte de un
+     * cliente. Una vez que lo recibe, parsea el application/xml recibico y
+     * elige que accion hacer, dependiendo del campo tipo
+     *
+     * @param he
+     * @throws IOException
+     */
     @Override
     public void handle(HttpExchange he) throws IOException {
         // parse request
@@ -61,9 +70,17 @@ public class ServerHTTP implements HttpHandler {
         String tipo = s.getTipo();
         switch (tipo) {
 
-            case "prueba":
-                HTTPResponse(he, response);
-                break;
+//            case "prueba":
+//                Tienda tiendaa = new Tienda();
+//                 {
+//                    try {
+//                        tiendaa.Comunica(generadorDom, s.getEmisor().getIp(), s.getEmisor().getPuerto(), s.getEmisor().getRol(), s.getEmisor().getId(), "venta", "ps esta bien");
+//                    } catch (ParserConfigurationException | TransformerException ex) {
+//                        Logger.getLogger(ServerHTTP.class.getName()).log(Level.SEVERE, null, ex);
+//                    }
+//                }
+//                HTTPResponse(he, response);
+//                break;
 
             case "inicializacion":
                 id = s.getReceptor().getId();
@@ -95,11 +112,7 @@ public class ServerHTTP implements HttpHandler {
                     post.GeneraDOM(generadorDom, 0, e.getIp(), e.getPuerto(), e.getId(), e.getRol(), "conexion", "<estado> Ok </estado> <msg>Todo perfecto</msg>");
                     listaClientes.add(new Cliente(e.getIp(), e.getPuerto(), e.getId(), listaTiendasCliente));
                 } else {
-                    try {
-                        post.sendPOST(0, e.getIp(), e.getPuerto(), e.getId(), e.getRol(), "conexion", "<estado> Error </estado> <msg> Tiendas introducidas no correctas</msg>");
-                    } catch (ParserConfigurationException | TransformerException ex) {
-                        Logger.getLogger(ServerHTTP.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    post.GeneraDOM(generadorDom, 0, e.getIp(), e.getPuerto(), e.getId(), e.getRol(), "conexion", "<estado> Error </estado> <msg> Tiendas introducidas no correctas</msg>");
                 }
                 break;
 
@@ -111,7 +124,6 @@ public class ServerHTTP implements HttpHandler {
                         try {
                             resultado = tienda.Comprar(s.getListaProductos());
                             tienda.Comunica(generadorDom, s.getEmisor().getIp(), s.getEmisor().getPuerto(), s.getEmisor().getRol(), s.getEmisor().getId(), "venta", resultado);
-                            break;
                         } catch (ParserConfigurationException | TransformerException ex) {
                             Logger.getLogger(ServerHTTP.class.getName()).log(Level.SEVERE, null, ex);
                         }
@@ -125,7 +137,7 @@ public class ServerHTTP implements HttpHandler {
                 for (Cliente cliente : listaClientes) {
                     if (cliente.getTiendaactual() != 0) {
                         if (s.getReceptor().getId() == cliente.getTiendaactual()) {
-                            tiendasconocidas += cliente.getListaTiendas();
+                            tiendasconocidas += cliente.getXMLListaTiendas();
                         }
                     }
                 }
@@ -144,11 +156,20 @@ public class ServerHTTP implements HttpHandler {
         }
     }
 
+    /**
+     * -Metodo HTTOResponse- Encargado de terminar el tratamiento de la peticion
+     * HTTP/POST Lee el xml encargado y se lo envia al cliente
+     *
+     * @param he
+     * @param response
+     * @throws IOException
+     */
     private void HTTPResponse(HttpExchange he, String response) throws IOException {
-        BufferedReader re = new BufferedReader(new FileReader("post.xml"));
+        //Lectura de xml
+        BufferedReader re = new BufferedReader(new FileReader("sendPost.xml"));
         response = re.readLine();
         re.close();
-
+        //Envío de xml
         he.sendResponseHeaders(200, response.length());
         OutputStream os = he.getResponseBody();
         os.write(response.toString().getBytes());

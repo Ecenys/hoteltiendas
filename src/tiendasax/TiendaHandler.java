@@ -7,6 +7,16 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 import tienda.Tienda;
 
+/**
+ * -Clase TiendaHandler- Handler del parseador, es el que se encarga de tratar
+ * el archivo, como hablamos del parseador SAX, este handler se ocupa de
+ * identificar el valor de las etiquedas y realizar acciones consecuentes a
+ * estas
+ * Parseador SAX: parseador de gran eficiencia (O(n), donde n es el numero
+ * de caracteres del archivo) pero de alta complejidad en grandes proyectos
+ *
+ * @author Oskar-MSI
+ */
 public class TiendaHandler extends DefaultHandler {
 
     //Necesarios para leer
@@ -26,12 +36,33 @@ public class TiendaHandler extends DefaultHandler {
     private int aux;
 
     //Parseador
+    /**
+     * -Metodo characters- Metodo generado automaticamente por el parseador, que
+     * lee y almacena en un buffer los nodos hoja (nodos sin <> o </>)
+     *
+     * @param ch
+     * @param start
+     * @param length
+     * @throws SAXException
+     */
     @Override
     public void characters(char[] ch, int start, int length) throws SAXException {
         super.characters(ch, start, length); //To change body of generated methods, choose Tools | Templates.
         buffer.append(ch, start, length);
     }
 
+    /**
+     * -Metodo endElement- metodo generado automaticamente por el parseador, que
+     * se encarga de detectar un nodo fin (denotado por la etiqueta </>) y
+     * realizar una accion definida dependiendo de su qName (valor de atributo).
+     * Normalmente se encarga de asignar los valores a las variables
+     * correspondientes
+     *
+     * @param uri
+     * @param localName
+     * @param qName
+     * @throws SAXException
+     */
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException {
         super.endElement(uri, localName, qName); //To change body of generated methods, choose Tools | Templates.
@@ -85,9 +116,22 @@ public class TiendaHandler extends DefaultHandler {
                     nuevoID = Integer.parseInt(buffer.toString());
                     break;
             }
-        } catch (NumberFormatException e) {}
+        } catch (NumberFormatException e) {
+        }
     }
 
+    /**
+     * -Metodo startElement- metodo generado automaticamente por el parseador,
+     * que se encarga de detectar un nodo inicio (denotado por la etiqueta <>) y
+     * realizar una accion definida dependiendo de su qName (valor de atributo).
+     * Normalmente se encarga de inicalizar y de vaciar el buffer.
+     *
+     * @param uri
+     * @param localName
+     * @param qName
+     * @param attributes
+     * @throws SAXException
+     */
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
         super.startElement(uri, localName, qName, attributes); //To change body of generated methods, choose Tools | Templates.

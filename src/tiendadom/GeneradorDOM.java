@@ -51,10 +51,8 @@ public class GeneradorDOM {
         Element mensaje = document.createElement("mensaje");
         Element emisor = document.createElement("emisor");
         Element receptor = document.createElement("receptor");
-        //if (idemisor != 0)
-            Element idem = document.createElement("id");
-        //if (idreceptor != 0)
-            Element idre = document.createElement("id");
+        Element idem = document.createElement("id");
+        Element idre = document.createElement("id");
         Element tipoo = document.createElement("tipo");
         Element cuerpoo = document.createElement("cuerpo");
         Element direccionem = document.createElement("direccion");
@@ -109,7 +107,7 @@ public class GeneradorDOM {
 
         Source source = new DOMSource(document); // origen de los datos
         
-        //Creacion y escritura del fichero físico
+        //Creacion y escritura del fichero xml físico
         File file = new File(archivo);
         FileWriter fw = new FileWriter(file);
         PrintWriter pw = new PrintWriter(fw);

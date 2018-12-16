@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><mensaje>
+    <emisor>
+        <direccion>
+            <ip>10.0.69.175</ip>
+            <puerto>80</puerto>
+            <id>0</id>
+        </direccion>
+        <rol>tienda</rol>
+    </emisor>
+    <receptor>
+        <direccion>
+            <ip>venta</ip>
+            <puerto>0</puerto>
+            <id>0</id>
+        </direccion>
+        <rol>venta</rol>
+    </receptor>
+    <tipo>venta</tipo>
+    <fecha>18-12-15</fecha>
+    <hora>16:49:28</hora>
+    <cuerpo>ps esta bien</cuerpo>
+</mensaje>
