@@ -70,9 +70,9 @@ public class Tienda {
      * realizarse manualmente por el programador, ya que no envia el documento
      *
      * @param generadorDom
-     * @param ip
-     * @param puerto
-     * @param rol
+     * @param ipdestino
+     * @param puertodestino
+     * @param roldestino
      * @param iddestino
      * @param tipo
      * @param cuerpo
@@ -82,7 +82,7 @@ public class Tienda {
      */
     public void Comunica(GeneradorDOM generadorDom, String ip, int puerto, String rol, int iddestino, String tipo, String cuerpo) throws IOException, ParserConfigurationException, TransformerException {
         SendPOST post = new SendPOST();
-        post.GeneraDOM(generadorDom, id, tipo, iddestino, iddestino, tipo, tipo, cuerpo);
+        post.GeneraDOM(generadorDom, id, ip, puerto, iddestino, rol, tipo, cuerpo);
     }
 
     //Gets y Sets

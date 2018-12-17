@@ -52,8 +52,8 @@ public class SendPOST {
      * @param cuerpo
      * @throws IOException
      */
-    public void GeneraDOM(GeneradorDOM generadorDom, int id, String ipdestino, int iddestino, int puertodestino, String roldestino, String tipo, String cuerpo) throws IOException {
-        generadorDom.generarDocumento(iplocal, puertolocal, id, "tienda", ipdestino, iddestino, puertodestino, roldestino, tipo, cuerpo);
+    public void GeneraDOM(GeneradorDOM generadorDom, int id, String ipdestino, int puertodestino, int iddestino, String roldestino, String tipo, String cuerpo) throws IOException {
+        generadorDom.generarDocumento(iplocal, puertolocal, id, "tienda", ipdestino, puertodestino, iddestino, roldestino, tipo, cuerpo);
         try {
             generadorDom.generarXML("sendPost.xml");
         } catch (TransformerConfigurationException e1) {
@@ -69,7 +69,7 @@ public class SendPOST {
      * para indicar que la comunicacion es correcta. En cualquier caso, si
      * devuelve 0 indica fallo en al conexion.
      *
-     * @param id
+     * @param idemisor
      * @param ipdestino
      * @param puertodestino
      * @param iddestino
@@ -87,7 +87,7 @@ public class SendPOST {
         GeneradorDOM generadorDom = new GeneradorDOM();
         GeneraDOM(generadorDom, id, ipdestino, puertodestino, iddestino, roldestino, tipo, cuerpo);
         URL obj;
-        if (roldestino == rolmonitor) {
+        if (cuerpo == "<tipoEvento>Evento</tipoEvento> <contenido>Connect</contenido>") {
             obj = new URL(POST_URLInitial);
         } else {
             obj = new URL("http://" + ipdestino + ":" + puertodestino);
@@ -131,9 +131,9 @@ public class SendPOST {
 
             TiendaSAX s = new TiendaSAX();
             s.Sax(f);
-//            if (s.getTipo() == "evento") {
-            return s.getNuevoID();
-//            }
+            if (s.getTipo() == "evento") {
+                return s.getNuevoID();
+            }
 
             //Temporalmente oculto, ya que no hace falta para el proyecto, pero necesario si queremos enviar mas de un mensaje POST, ademas del inicial
             //Reenvio a monitor del mensaje, en caso de que el mensaje no fuera para el
@@ -145,7 +145,73 @@ public class SendPOST {
 //            if(exito == 0)
 //                return 0;
 //            //Comunicacion total exitosa
-//            return 1;
+            return 1;
+        } else {
+            // Si comunicacion fallida, devolvemos 0
+            System.out.println("Comunicación con " + roldestino + " fallida");
+            return 0;
+        }
+    }
+    
+    public int sendPOSTFile(String ipdestino, int puertodestino, String roldestino, String archivo) throws IOException, ParserConfigurationException, TransformerException, SAXException {
+
+        
+        URL obj;
+        obj = new URL("http://" + ipdestino + ":" + puertodestino);
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+        con.setRequestMethod("POST");
+        con.setRequestProperty("Content-Type", "application/xml;charset=utf-8");
+        // For POST only - START
+        FileReader fileReader = new FileReader(archivo);
+        BufferedReader b = new BufferedReader(fileReader);
+        con.setDoOutput(true);
+        DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+        wr.writeBytes(b.readLine());
+        wr.flush();
+        wr.close();
+
+        // For POST only - END
+        int responseCode = con.getResponseCode();
+        if (responseCode != 200) {
+            System.out.println("POST Response Code :: " + responseCode);
+        } else {
+            System.out.println("Conexión inicial correcta");
+        }
+
+        if (responseCode == HttpURLConnection.HTTP_OK) { //success
+            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            String inputLine;
+            StringBuffer response = new StringBuffer();
+
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+
+            // Escribimos el resultado de la comunicacion en un file xml, y la parseamos
+            File f = new File("sendPost.xml");
+            BufferedWriter out = new BufferedWriter(new FileWriter(f));
+            out.write(response.toString());
+            out.flush();
+            out.close();
+
+            TiendaSAX s = new TiendaSAX();
+            s.Sax(f);
+            if (s.getTipo() == "evento") {
+                return s.getNuevoID();
+            }
+
+            //Temporalmente oculto, ya que no hace falta para el proyecto, pero necesario si queremos enviar mas de un mensaje POST, ademas del inicial
+            //Reenvio a monitor del mensaje, en caso de que el mensaje no fuera para el
+//            if (roldestino != rolmonitor) {
+//                int exito = sendPOST(id, ipmonitor, puertomonitor, 0, rolmonitor, tipo, cuerpo);
+//            }
+//            
+//            //Si conexion con monitor es fallida, tambien validamos como fallida esta
+//            if(exito == 0)
+//                return 0;
+//            //Comunicacion total exitosa
+            return 1;
         } else {
             // Si comunicacion fallida, devolvemos 0
             System.out.println("Comunicación con " + roldestino + " fallida");
