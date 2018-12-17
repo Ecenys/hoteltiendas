@@ -70,17 +70,17 @@ public class ServerHTTP implements HttpHandler {
         String tipo = s.getTipo();
         switch (tipo) {
 
-//            case "prueba":
-//                Tienda tiendaa = new Tienda();
-//                 {
-//                    try {
-//                        tiendaa.Comunica(generadorDom, s.getEmisor().getIp(), s.getEmisor().getPuerto(), s.getEmisor().getRol(), s.getEmisor().getId(), "venta", "ps esta bien");
-//                    } catch (ParserConfigurationException | TransformerException ex) {
-//                        Logger.getLogger(ServerHTTP.class.getName()).log(Level.SEVERE, null, ex);
-//                    }
-//                }
-//                HTTPResponse(he, response);
-//                break;
+            case "prueba":
+                Tienda tiendaa = new Tienda();
+                 {
+                    try {
+                        tiendaa.Comunica(generadorDom, s.getEmisor().getIp(), s.getEmisor().getPuerto(), s.getEmisor().getRol(), s.getEmisor().getId(), "venta", "ps esta bien");
+                        HTTPResponse(he, response);
+                    } catch (ParserConfigurationException | TransformerException | SAXException ex) {
+                        Logger.getLogger(ServerHTTP.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                break;
 
             case "inicializacion":
                 id = s.getReceptor().getId();
@@ -96,6 +96,13 @@ public class ServerHTTP implements HttpHandler {
                         break;
                     }
                 }
+        {
+            try {
+                HTTPResponse(he, response);
+            } catch (ParserConfigurationException | TransformerException | SAXException ex) {
+                Logger.getLogger(ServerHTTP.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
                 break;
 
             case "conexion":
@@ -111,8 +118,18 @@ public class ServerHTTP implements HttpHandler {
                 if (listaTiendas.size() == i) {
                     post.GeneraDOM(generadorDom, 0, e.getIp(), e.getPuerto(), e.getId(), e.getRol(), "conexion", "<estado> Ok </estado> <msg>Todo perfecto</msg>");
                     listaClientes.add(new Cliente(e.getIp(), e.getPuerto(), e.getId(), listaTiendasCliente));
+            try {
+                HTTPResponse(he, response);
+            } catch (ParserConfigurationException | TransformerException | SAXException ex) {
+                Logger.getLogger(ServerHTTP.class.getName()).log(Level.SEVERE, null, ex);
+            }
                 } else {
                     post.GeneraDOM(generadorDom, 0, e.getIp(), e.getPuerto(), e.getId(), e.getRol(), "conexion", "<estado> Error </estado> <msg> Tiendas introducidas no correctas</msg>");
+            try {
+                HTTPResponse(he, response);
+            } catch (ParserConfigurationException | TransformerException | SAXException ex) {
+                Logger.getLogger(ServerHTTP.class.getName()).log(Level.SEVERE, null, ex);
+            }
                 }
                 break;
 
@@ -124,7 +141,8 @@ public class ServerHTTP implements HttpHandler {
                         try {
                             resultado = tienda.Comprar(s.getListaProductos());
                             tienda.Comunica(generadorDom, s.getEmisor().getIp(), s.getEmisor().getPuerto(), s.getEmisor().getRol(), s.getEmisor().getId(), "venta", resultado);
-                        } catch (ParserConfigurationException | TransformerException ex) {
+                            HTTPResponse(he, response);
+                        } catch (ParserConfigurationException | TransformerException | SAXException ex) {
                             Logger.getLogger(ServerHTTP.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }
@@ -141,7 +159,14 @@ public class ServerHTTP implements HttpHandler {
                         }
                     }
                 }
-                post.GeneraDOM(generadorDom, 0, e.getIp(), e.getPuerto(), e.getId(), e.getRol(), "conexion", tiendasconocidas);
+                post.GeneraDOM(generadorDom, s.getReceptor().getId(), e.getIp(), e.getPuerto(), e.getId(), e.getRol(), "conexion", tiendasconocidas);
+        {
+            try {
+                HTTPResponse(he, response);
+            } catch (ParserConfigurationException | TransformerException | SAXException ex) {
+                Logger.getLogger(ServerHTTP.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
                 break;
 
             case "fin":
@@ -151,7 +176,14 @@ public class ServerHTTP implements HttpHandler {
                         cliente.setTiendaactual(0);
                     }
                 }
-                post.GeneraDOM(generadorDom, 0, e.getIp(), e.getPuerto(), e.getId(), e.getRol(), "fin", "<msg>ACK</msg>");
+                post.GeneraDOM(generadorDom, s.getReceptor().getId(), e.getIp(), e.getPuerto(), e.getId(), e.getRol(), "fin", "<msg>ACK</msg>");
+        {
+            try {
+                HTTPResponse(he, response);
+            } catch (ParserConfigurationException | TransformerException | SAXException ex) {
+                Logger.getLogger(ServerHTTP.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
                 break;
         }
     }
@@ -164,12 +196,13 @@ public class ServerHTTP implements HttpHandler {
      * @param response
      * @throws IOException
      */
-    private void HTTPResponse(HttpExchange he, String response) throws IOException {
+    private void HTTPResponse(HttpExchange he, String response) throws IOException, ParserConfigurationException, TransformerException, SAXException {
         //Lectura de xml
         BufferedReader re = new BufferedReader(new FileReader("sendPost.xml"));
         response = re.readLine();
         re.close();
         //Envío de xml
+        post.sendPOSTFile(Main.getIpmonitor(),Main.getPuertomonitor(),Main.getRolmonitor(),"sendPost.xml"); // replica para monitor
         he.sendResponseHeaders(200, response.length());
         OutputStream os = he.getResponseBody();
         os.write(response.toString().getBytes());

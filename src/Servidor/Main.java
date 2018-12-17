@@ -10,11 +10,12 @@ import javax.xml.transform.TransformerException;
 import org.xml.sax.SAXException;
 
 /**
- * Clase principal que inicializa las distintas etapas del servidor
- * GPL-3.0
+ * Clase principal que inicializa las distintas etapas del servidor 
+ * GPL-3.0 
  * GNU GENERAL PUBLIC LICENSE
+ *
  * @author Oskar-C97
- */ 
+ */
 public class Main {
 
     //Datos del servidor
@@ -27,8 +28,8 @@ public class Main {
     private static final int idmonitor = 0; //Aunque monitor no tiene id, lo identificaremos como 0, para evitar que algun otro agente que no lo tenga contemplado y de error de ejecucion
     private static final String rolmonitor = "monitor";
     //Array donde almacenamos las tiendas que creamos
-    private static ArrayList<Tienda> listaTiendas = new ArrayList<Tienda>();    
-    
+    private static ArrayList<Tienda> listaTiendas = new ArrayList<Tienda>();
+
     public static void main(String[] args) throws IOException, ParserConfigurationException, SAXException, TransformerException, InterruptedException {
         System.out.println("Iniciando simulación, asignando tiendas");
         // Para empezar, preparamos la emulación, indicando al monitor cuantas tiendas existen
@@ -40,11 +41,11 @@ public class Main {
 
     /**
      * -Metodo PrepareEmulation- Inicialización de N tiendas y asignacion de ID
-     * 
+     *
      * @throws IOException
      * @throws ParserConfigurationException
      * @throws TransformerException
-     * @throws SAXException 
+     * @throws SAXException
      */
     private static void PrepareEmulation() throws IOException, ParserConfigurationException, TransformerException, SAXException {
         //Instanciamos el objeto post, para poder crear y mandar el post de inicialización
@@ -62,10 +63,11 @@ public class Main {
     }
 
     /**
-     * -Metodo Listening- Inicializacion del servidor con los parametros oportunos
-     * 
+     * -Metodo Listening- Inicializacion del servidor con los parametros
+     * oportunos
+     *
      * @throws IOException
-     * @throws ParserConfigurationException 
+     * @throws ParserConfigurationException
      */
     private static void Listening() throws IOException, ParserConfigurationException {
         HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
@@ -104,5 +106,4 @@ public class Main {
         return rolmonitor;
     }
 
-    
 }
